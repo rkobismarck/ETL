@@ -1,7 +1,7 @@
 #!/usr/bin/env groovy
 
 def notifyBuild(String buildStatus = 'STARTED') {
-    buildStatus = buildStatus ? : 'SUCCESS'
+    buildStatus = buildStatus?:'SUCCESS'
 
     def colorName = 'RED'
     def colorCode = '#FF0000'
