@@ -9,6 +9,6 @@ node (label: 'master') {
      build 'AggregationEngine/ae-release'   
    }
    stage('Results') {
-     echo 'Results'
+     echo 'Results publish.'
    }
 }
