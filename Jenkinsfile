@@ -1,4 +1,23 @@
 #!/usr/bin/env groovy
+branch_name      = ""
+
+def obtainBranchName(branch) {
+    def result
+    switch (branch) {
+        case 'dev':
+            echo "====++++ Development ++++===="
+            result = 'develop'
+            break
+        case 'prod':
+            echo "====++++ Production ++++===="
+            result = 'master'
+            break
+        default:
+            result = 'develop'
+            break
+    }
+    result
+}
 
 def notifyBuild(String buildStatus = 'STARTED') {
     buildStatus = buildStatus?:'SUCCESS'
@@ -28,13 +47,29 @@ pipeline {
     triggers {
         pollSCM('')
     }
+    parameters {
+        choice(
+            choices: 'dev\nprod',
+            description: 'Environment',
+            name: 'environment_argument'
+        )
+    }
     stages {
+        stage('Environment') {
+            steps {
+                script {
+                    BRANCH_NAME = obtainBranchName(params.environment_argument)
+                }
+            }
+        }
         stage('Test') {
             steps {
                 script {
                     try {
                         notifyBuild('Started')
-                        build job: 'AggregationEngine/ae-test'
+                        build job: 'AggregationEngine/ae-test',  parameters: [
+                            string(name: 'BRANCH_NAME', value: "$branch_name")
+                        ]
                     } catch (e) {
                         currentBuild.result = "FAILED"
                         throw e
@@ -51,7 +86,9 @@ pipeline {
                 script {
                     try {
                         notifyBuild('Started')
-                        build job: 'AggregationEngine/ae-build'
+                        build job: 'AggregationEngine/ae-build', parameters: [
+                            string(name: 'BRANCH_NAME', value: "$branch_name")
+                        ]
                     } catch (e) {
                         currentBuild.result = "FAILED"
                         throw e
@@ -66,7 +103,9 @@ pipeline {
                 script {
                     try {
                         notifyBuild('Started')
-                        build job: 'AggregationEngine/ae-release'
+                        build job: 'AggregationEngine/ae-release', parameters: [
+                            string(name: 'BRANCH_NAME', value: "$branch_name")
+                        ]
                     } catch (e) {
                         currentBuild.result = "FAILED"
                         throw e
