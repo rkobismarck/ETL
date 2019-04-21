@@ -17,9 +17,9 @@ object Transformations extends LazyLogging {
   def scoringReport(df: DataFrame): DataFrame = {
     logger.info("ETL Transformations - Transformation Scoring Started.")
     var columnFilter: Column = new Column("TARGET_LABEL_BAD")
-    var numberTotalOfRecords: Long = df.count()
-    var numberOfBlacklisted: Long = df.filter(columnFilter.contains("1")).count()
-    var index: Long = numberTotalOfRecords / numberOfBlacklisted
+    var numberTotalOfRecords: Int = df.count().toInt
+    var numberOfBlacklisted: Float = df.filter(columnFilter.contains("1")).count().toFloat
+    var index: Float =  (numberOfBlacklisted / numberTotalOfRecords)*100
     logger.info("ETL Transformations - Transformation Scoring Finished Successfully.")
     return HDFSUtils.convertListToDF(Seq(index.toString()), Seq("delinquency-rate"))
   }

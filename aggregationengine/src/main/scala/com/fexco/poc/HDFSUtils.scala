@@ -38,13 +38,11 @@ object HDFSUtils {
   }
 
   def writeOnHDFS(df: DataFrame, path: String, format: String): Any = {
-    if (format == "csv") {
-      writeCSVOnHDFS(df, path)
+    format match {
+      case "csv" => return writeCSVOnHDFS(df, path)
+      case "parquet" => return writeParquetOnHDFS(df, path)
+      case default => throw new IllegalArgumentException("Illegal output format, it's not defined.")
     }
-    if (format == "parquet") {
-      writeParquetOnHDFS(df, path)
-    }
-
   }
 
   def writeCSVOnHDFS(df: DataFrame, path: String): Any = {
