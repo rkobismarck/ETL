@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-branch_name      = ""
+BRANCH_NAME = ""
 
 def obtainBranchName(branch) {
     def result
@@ -68,7 +68,7 @@ pipeline {
                     try {
                         notifyBuild('Started')
                         build job: 'AggregationEngine/ae-test',  parameters: [
-                            string(name: 'BRANCH_NAME', value: "$branch_name")
+                            string(name: 'BRANCH_NAME', value: "$BRANCH_NAME")
                         ]
                     } catch (e) {
                         currentBuild.result = "FAILED"
@@ -78,8 +78,23 @@ pipeline {
                     }
                 }
             }
-
-
+        }
+        stage('Acceptance-Test') {
+            steps {
+                script {
+                    try {
+                        notifyBuild('Started')
+                        build job: 'AggregationEngine/ae-acceptance-test',  parameters: [
+                            string(name: 'BRANCH_NAME', value: "$BRANCH_NAME")
+                        ]
+                    } catch (e) {
+                        currentBuild.result = "FAILED"
+                        throw e
+                    } finally {
+                        notifyBuild(currentBuild.result)
+                    }
+                }
+            }
         }
         stage('Build') {
             steps {
@@ -87,7 +102,7 @@ pipeline {
                     try {
                         notifyBuild('Started')
                         build job: 'AggregationEngine/ae-build', parameters: [
-                            string(name: 'BRANCH_NAME', value: "$branch_name")
+                            string(name: 'BRANCH_NAME', value: "$BRANCH_NAME")
                         ]
                     } catch (e) {
                         currentBuild.result = "FAILED"
@@ -104,7 +119,7 @@ pipeline {
                     try {
                         notifyBuild('Started')
                         build job: 'AggregationEngine/ae-release', parameters: [
-                            string(name: 'BRANCH_NAME', value: "$branch_name")
+                            string(name: 'BRANCH_NAME', value: "$BRANCH_NAME")
                         ]
                     } catch (e) {
                         currentBuild.result = "FAILED"
