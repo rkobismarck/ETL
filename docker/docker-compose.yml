@@ -1,0 +1,15 @@
+version: '3.7'
+services:
+  spark-instance-fexco:
+    image: 'rokokito/fexco-etl:spark-instance-fexco'
+    ports: 
+      - 4040:4040
+    volumes:
+      # - /Users/robertotrujillo/ae/Input:/FEXCO/ETLData
+      - /home/ubuntu/aggregation-engine/Output:/FEXCO/ETLDataOutput
+      - /tmp/logs/aggregation-engine:/tmp/logs/agregationengine
+    tty: true
+    stdin_open: true
+
+    
+    
