@@ -14,7 +14,8 @@ There are already several documents in this repository, so this will be the map 
 
 > Specifications:
 	Here you'll find the project requirement in an Agile format, in both versions PDF and DOCX.
-	[Specs](https://github.com/rkobismarck/ETL/tree/master/documents/specifications) 
+	[Specs](https://github.com/rkobismarck/ETL/blob/master/specifications/FEXCOETLPoC.pdf) 
+	
 
 > Jenkins: 
 	Here will reside the source code for the pipeline in order to support WebHook integration.
