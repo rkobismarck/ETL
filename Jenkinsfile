@@ -68,7 +68,7 @@ pipeline {
                     try {
                         notifyBuild('Started')
                         build job: 'AggregationEngine/ae-test',  parameters: [
-                            string(name: 'BRANCH_NAME', value: "$branch_name")
+                            string(name: 'BRANCH_NAME', value: "$BRANCH_NAME")
                         ]
                     } catch (e) {
                         currentBuild.result = "FAILED"
@@ -87,7 +87,7 @@ pipeline {
                     try {
                         notifyBuild('Started')
                         build job: 'AggregationEngine/ae-build', parameters: [
-                            string(name: 'BRANCH_NAME', value: "$branch_name")
+                            string(name: 'BRANCH_NAME', value: "$BRANCH_NAME")
                         ]
                     } catch (e) {
                         currentBuild.result = "FAILED"
@@ -104,7 +104,7 @@ pipeline {
                     try {
                         notifyBuild('Started')
                         build job: 'AggregationEngine/ae-release', parameters: [
-                            string(name: 'BRANCH_NAME', value: "$branch_name")
+                            string(name: 'BRANCH_NAME', value: "$BRANCH_NAME")
                         ]
                     } catch (e) {
                         currentBuild.result = "FAILED"
