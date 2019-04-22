@@ -78,8 +78,23 @@ pipeline {
                     }
                 }
             }
-
-
+        }
+        stage('Acceptance-Test') {
+            steps {
+                script {
+                    try {
+                        notifyBuild('Started')
+                        build job: 'AggregationEngine/ae-acceptance-test',  parameters: [
+                            string(name: 'BRANCH_NAME', value: "$BRANCH_NAME")
+                        ]
+                    } catch (e) {
+                        currentBuild.result = "FAILED"
+                        throw e
+                    } finally {
+                        notifyBuild(currentBuild.result)
+                    }
+                }
+            }
         }
         stage('Build') {
             steps {
