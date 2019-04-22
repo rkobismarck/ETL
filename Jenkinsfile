@@ -1,5 +1,5 @@
 #!/usr/bin/env groovy
-branch_name      = ""
+BRANCH_NAME = ""
 
 def obtainBranchName(branch) {
     def result
